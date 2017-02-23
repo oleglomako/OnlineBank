@@ -13,6 +13,7 @@ import com.userfront.dao.RoleDao;
 import com.userfront.dao.UserDao;
 import com.userfront.domain.User;
 import com.userfront.domain.security.UserRole;
+import com.userfront.service.AccountService;
 import com.userfront.service.UserService;
 
 @Service
@@ -28,6 +29,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
+    
+    @Autowired
+    private AccountService accountService;
     
 	public void save(User user) {
 		userDao.save(user);
