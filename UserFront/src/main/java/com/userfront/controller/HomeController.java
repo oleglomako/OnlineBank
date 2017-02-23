@@ -10,15 +10,20 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.userfront.dao.RoleDao;
 import com.userfront.domain.User;
+import com.userfront.domain.security.UserRole;
 import com.userfront.service.UserService;
 
 @Controller
 public class HomeController {
-	
+
 	@Autowired
 	private UserService userService;
-
+	
+	@Autowired
+    private RoleDao roleDao;
+	
 	@RequestMapping("/")
 	public String home() {
 		return "redirect:/index";
@@ -35,27 +40,29 @@ public class HomeController {
 		model.addAttribute("user", user);
 		return "signup";
 	}
-	
+
 	@RequestMapping(value = "/signup", method = RequestMethod.POST)
-    public String signupPost(@ModelAttribute("user") User user,  Model model) {
+	public String signupPost(@ModelAttribute("user") User user, Model model) {
 
-        if(userService.checkUserExists(user.getUsername(), user.getEmail()))  {
+		if (userService.checkUserExists(user.getUsername(), user.getEmail())) {
 
-            if (userService.checkEmailExists(user.getEmail())) {
-                model.addAttribute("emailExists", true);
-            }
+			if (userService.checkEmailExists(user.getEmail())) {
+				model.addAttribute("emailExists", true);
+			}
 
-            if (userService.checkUsernameExists(user.getUsername())) {
-                model.addAttribute("usernameExists", true);
-            }
+			if (userService.checkUsernameExists(user.getUsername())) {
+				model.addAttribute("usernameExists", true);
+			}
 
-            return "signup";
-        } else {
+			return "signup";
+		} else {
+			Set<UserRole> userRoles = new HashSet<>();
+			userRoles.add(new UserRole(user, roleDao.findByName("ROLE_USER")));
 
-            userService.create(user);
+			userService.createUser(user, userRoles);
 
-            return "redirect:/";
-        }
-    }
-	
+			return "redirect:/";
+		}
+	}
+
 }
