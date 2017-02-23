@@ -5,6 +5,9 @@ import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.userfront.dao.PrimaryAccountDao;
+import com.userfront.dao.SavingsAccountDao;
+import com.userfront.domain.PrimaryAccount;
 import com.userfront.domain.SavingsAccount;
 import com.userfront.service.AccountService;
 import com.userfront.service.UserService;
@@ -23,6 +26,16 @@ public class AccountServiceImpl implements AccountService {
 	@Autowired
 	private UserService userService;
 
+    public PrimaryAccount createPrimaryAccount() {
+        PrimaryAccount primaryAccount = new PrimaryAccount();
+        primaryAccount.setAccountBalance(new BigDecimal(0.0));
+        primaryAccount.setAccountNumber(accountGen());
+
+        primaryAccountDao.save(primaryAccount);
+
+        return primaryAccountDao.findByAccountNumber(primaryAccount.getAccountNumber());
+    }
+	
 	public SavingsAccount createSavingsAccount() {
 		SavingsAccount savingsAccount = new SavingsAccount();
 		savingsAccount.setAccountBalance(new BigDecimal(0.0));
