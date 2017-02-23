@@ -67,5 +67,15 @@ public class Appointment {
 		this.user = user;
 	}
 
+    @Override
+    public String toString() {
+        return "Appointment{" +
+                "id=" + id +
+                ", date=" + date +
+                ", location='" + location + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                '}';
+    }
     
 }
