@@ -19,31 +19,35 @@ import com.userfront.service.UserService;
 @RequestMapping("/transfer")
 public class TransferController {
 
-	@Autowired
-	private TransactionService transactionService;
+    @Autowired
+    private TransactionService transactionService;
 
-	@Autowired
-	private UserService userService;
+    @Autowired
+    private UserService userService;
 
-	@RequestMapping(value = "/betweenAccounts", method = RequestMethod.GET)
-	public String betweenAccounts(Model model) {
-		model.addAttribute("transferFrom", "");
-		model.addAttribute("transferTo", "");
-		model.addAttribute("amount", "");
+    @RequestMapping(value = "/betweenAccounts", method = RequestMethod.GET)
+    public String betweenAccounts(Model model) {
+        model.addAttribute("transferFrom", "");
+        model.addAttribute("transferTo", "");
+        model.addAttribute("amount", "");
 
-		return "betweenAccounts";
-	}
+        return "betweenAccounts";
+    }
 
-	@RequestMapping(value = "/betweenAccounts", method = RequestMethod.POST)
-	public String betweenAccountsPost(@ModelAttribute("transferFrom") String transferFrom,
-			@ModelAttribute("transferTo") String transferTo, @ModelAttribute("amount") String amount,
-			Principal principal) throws Exception {
-		User user = userService.findByUsername(principal.getName());
-		PrimaryAccount primaryAccount = user.getPrimaryAccount();
-		SavingsAccount savingsAccount = user.getSavingsAccount();
-		transactionService.betweenAccountsTransfer(transferFrom, transferTo, amount, primaryAccount, savingsAccount);
+    @RequestMapping(value = "/betweenAccounts", method = RequestMethod.POST)
+    public String betweenAccountsPost(
+            @ModelAttribute("transferFrom") String transferFrom,
+            @ModelAttribute("transferTo") String transferTo,
+            @ModelAttribute("amount") String amount,
+            Principal principal
+    ) throws Exception {
+        User user = userService.findByUsername(principal.getName());
+        PrimaryAccount primaryAccount = user.getPrimaryAccount();
+        SavingsAccount savingsAccount = user.getSavingsAccount();
+        transactionService.betweenAccountsTransfer(transferFrom, transferTo, amount, primaryAccount, savingsAccount);
 
-		return "redirect:/userFront";
-	}
-
+        return "redirect:/userFront";
+    }
+    
+    
 }
