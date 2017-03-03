@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.userfront.domain.PrimaryAccount;
 import com.userfront.domain.PrimaryTransaction;
 import com.userfront.domain.SavingsAccount;
+import com.userfront.domain.SavingsTransaction;
 import com.userfront.domain.User;
 import com.userfront.service.AccountService;
 import com.userfront.service.TransactionService;
@@ -46,11 +47,12 @@ public class AccountController {
 
 	@RequestMapping("/savingsAccount")
     public String savingsAccount(Model model, Principal principal) {
+		List<SavingsTransaction> savingsTransactionList = transactionService.findSavingsTransactionList(principal.getName());
         User user = userService.findByUsername(principal.getName());
         SavingsAccount savingsAccount = user.getSavingsAccount();
 
         model.addAttribute("savingsAccount", savingsAccount);
-        model.addAttribute("savingsTransactionList");
+        model.addAttribute("savingsTransactionList", savingsTransactionList);
 
         return "savingsAccount";
     }
