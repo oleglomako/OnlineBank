@@ -37,11 +37,11 @@ public class AccountController {
 		List<PrimaryTransaction> primaryTransactionList = transactionService.findPrimaryTransactionList(principal.getName());
 		
 		User user = userService.findByUsername(principal.getName());
-		PrimaryAccount primaryAccount = user.getPrimaryAccount();
+        PrimaryAccount primaryAccount = user.getPrimaryAccount();
 
-		model.addAttribute("primaryAccount", primaryAccount);
-		model.addAttribute("primaryTransactionList");
-
+        model.addAttribute("primaryAccount", primaryAccount);
+        model.addAttribute("primaryTransactionList", primaryTransactionList);
+		
 		return "primaryAccount";
 	}
 
